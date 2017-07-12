@@ -47,11 +47,15 @@ class JobIoWrapper < ApplicationRecord
   private
 
     def extracted_original_name
-      uploaded_file ? uploaded_file.uploader.filename : File.basename(path)
+      foo = uploaded_file ? uploaded_file.uploader.filename : File.basename(path)
+      Rails.logger.debug("ZZZ original_name is #{foo}")
+      foo
     end
 
     def extracted_mime_type
-      uploaded_file ? uploaded_file.uploader.content_type : Hydra::PCDM::GetMimeTypeForFile.call(original_name)
+      foo = uploaded_file ? uploaded_file.uploader.content_type : Hydra::PCDM::GetMimeTypeForFile.call(original_name)
+      Rails.logger.debug("ZZZ mime_type is #{foo}")
+      foo
     end
 
     # The magic that switches *once* between local filepath and CarrierWave file
@@ -70,6 +74,7 @@ class JobIoWrapper < ApplicationRecord
 
     # @return [File, nil] nil if the path doesn't exist on this (worker) system or can't be read
     def file_from_path
+      Rails.logger.debug("ZZZ trying to load file from #{path}. exists? #{File.exist?(path)}")
       File.open(path, 'rb') if path && File.exist?(path) && File.readable?(path)
     end
 

@@ -18,6 +18,7 @@ module Hyrax
       # @param [Symbol, #to_s] relation
       # @return [IngestJob, FalseClass] false on failure, otherwise the queued job
       def create_content(file, relation = :original_file)
+        Rails.logger.debug("ZZZ file looks like #{file.inspect} (#{file.class})")
         # If the file set doesn't have a title or label assigned, set a default.
         file_set.label ||= label_for(file)
         file_set.title = [file_set.label] if file_set.title.blank?
@@ -125,6 +126,8 @@ module Hyrax
         # @return [Hash] params for JobIoWrapper (new or create)
         def wrapper_params(file, relation)
           args = { user: user, relation: relation.to_s, file_set_id: file_set.id }
+          Rails.logger.debug("ZZZ file is a #{file.class}, is H::UF? #{file.is_a?(Hyrax::UploadedFile)}")
+          Rails.logger.debug("ZZZ path is #{file.is_a?(Hyrax::UploadedFile ? file.uploader.path : file.path)}")
           if file.is_a?(Hyrax::UploadedFile)
             args[:uploaded_file] = file
             args[:path] = file.uploader.path

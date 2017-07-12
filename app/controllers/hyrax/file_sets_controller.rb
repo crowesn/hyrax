@@ -42,6 +42,7 @@ module Hyrax
       file = params.fetch(:file_set, {}).fetch(:files, []).detect { |f| f.respond_to?(:original_filename) }
       return render_json_response(response_type: :bad_request, options: { message: 'Error! No file uploaded', description: 'missing file' }) unless file
       return empty_file_response(file) if empty_file?(file)
+      Rails.logger.debug("ZZZ filesetscontroller processing #{file.inspect}")
       process_non_empty_file(file: file)
     rescue RSolr::Error::Http => error
       logger.error "FileSetController::create rescued #{error.class}\n\t#{error}\n #{error.backtrace.join("\n")}\n\n"

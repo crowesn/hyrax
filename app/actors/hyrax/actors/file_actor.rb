@@ -22,6 +22,7 @@ module Hyrax
       # @todo create a job to monitor the temp directory (or in a multi-worker system, directories!) to prune old files that have made it into the repo
       def ingest_file(io)
         # Skip versioning because versions will be minted by VersionCommitter as necessary during save_characterize_and_record_committer.
+        Rails.logger.debug("ZZZ ingest_file with io: #{io.inspect} path: #{io.path}")
         Hydra::Works::AddFileToFileSet.call(file_set,
                                             io,
                                             relation,
