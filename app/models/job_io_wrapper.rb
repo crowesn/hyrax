@@ -74,7 +74,7 @@ class JobIoWrapper < ApplicationRecord
 
     # @return [File, nil] nil if the path doesn't exist on this (worker) system or can't be read
     def file_from_path
-      Rails.logger.debug("ZZZ trying to load file from #{path}. exists? #{File.exist?(path)}")
+      Rails.logger.debug("ZZZ trying to load file from #{path}. exists? #{path.nil? ? false : File.exist?(path)}")
       File.open(path, 'rb') if path && File.exist?(path) && File.readable?(path)
     end
 

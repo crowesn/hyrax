@@ -127,7 +127,7 @@ module Hyrax
         def wrapper_params(file, relation)
           args = { user: user, relation: relation.to_s, file_set_id: file_set.id }
           Rails.logger.debug("ZZZ file is a #{file.class}, is H::UF? #{file.is_a?(Hyrax::UploadedFile)}")
-          Rails.logger.debug("ZZZ path is #{file.is_a?(Hyrax::UploadedFile ? file.uploader.path : file.path)}")
+          Rails.logger.debug("ZZZ path is #{file.is_a?(Hyrax::UploadedFile) ? file.uploader.path : file.path}")
           if file.is_a?(Hyrax::UploadedFile)
             args[:uploaded_file] = file
             args[:path] = file.uploader.path
