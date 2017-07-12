@@ -21,7 +21,6 @@ class AttachFilesToWorkJob < Hyrax::ApplicationJob
 
   private
 
-    # rubocop:disable Metrics/AbcSize
     # @param [Hyrax::Actors::FileSetActor] actor
     # @param [Hyrax::UploadedFile] uploaded_file .uploader.file must be a CarrierWave::SanitizedFile or .uploader.url must be present
     def attach_content(actor, uploaded_file)
@@ -38,7 +37,6 @@ class AttachFilesToWorkJob < Hyrax::ApplicationJob
         raise ArgumentError, "#{file_uploader.class} received with #{file_uploader.file.class} object and no URL"
       end
     end
-    # rubocop:enable Metrics/AbcSize
 
     # The attributes used for visibility - used to send as initial params to
     # created FileSets.
