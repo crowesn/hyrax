@@ -31,7 +31,7 @@ class AttachFilesToWorkJob < Hyrax::ApplicationJob
       if file_uploader.file.is_a? CarrierWave::SanitizedFile
         actor.create_content(file_uploader.file.to_file)
       elsif file_uploader.file.is_a? CarrierWave::Storage::AWSFile
-        actor.create_content(file_uploader.file.read)
+        actor.create_content(uploaded_file)
       elsif file_uploader.url.present?
         actor.import_url(file_uploader.url)
       else
