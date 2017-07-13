@@ -141,6 +141,8 @@ module Hyrax
           args
         end
 
+        # rubocop:disable Metrics/CyclomaticComplexity
+        # rubocop:disable Metrics/PerceivedComplexity
         # For the label, use the original_filename or original_name if it's there.
         # If the file was imported via URL, parse the original filename.
         # If all else fails, use the basename of the file where it sits.
@@ -149,7 +151,7 @@ module Hyrax
           if file.is_a?(Hyrax::UploadedFile) && file.uploader.filename.present?
             file.uploader.filename
           elsif file.is_a?(Hyrax::UploadedFile) && file.uploader.filename.blank?
-            File.basename(Addressable::URI.parse(file.file_url).path
+            File.basename(Addressable::URI.parse(file.file_url).path)
           elsif file.respond_to?(:original_filename) # e.g. ActionDispatch::Http::UploadedFile, CarrierWave::SanitizedFile
             file.original_filename
           elsif file.respond_to?(:original_name) # e.g. Hydra::Derivatives::IoDecorator
@@ -161,6 +163,8 @@ module Hyrax
             File.basename(file)
           end
         end
+        # rubocop:enable Metrics/CyclomaticComplexity
+        # rubocop:enable Metrics/PerceivedComplexity
 
         def assign_visibility?(file_set_params = {})
           !((file_set_params || {}).keys.map(&:to_s) & %w[visibility embargo_release_date lease_expiration_date]).empty?
