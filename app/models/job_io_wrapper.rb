@@ -48,6 +48,8 @@ class JobIoWrapper < ApplicationRecord
 
     def extracted_original_name
       foo = uploaded_file ? uploaded_file.uploader.filename : File.basename(path)
+      # Needed because uploader.filename returns `nil` with AWSFiles
+      foo ||= File.basename(path)
       Rails.logger.debug("ZZZ original_name is #{foo}")
       foo
     end
@@ -69,7 +71,12 @@ class JobIoWrapper < ApplicationRecord
     def file_from_uploaded_file!
       raise("path '#{path}' was unusable and uploaded_file empty") unless uploaded_file
       self.path = uploaded_file.uploader.file.file # old path useless now
-      uploaded_file.uploader.file.to_file
+      if uploaded_file.uploader.file.is_a?(CarrierWave::Storage::AWSFile)
+        # CarrierWave::Storage::AWSFile does not have the same interface as other CW files
+        uploaded_file.uploader.file
+      else
+        uploaded_file.uploader.file.to_file
+      end
     end
 
     # @return [File, nil] nil if the path doesn't exist on this (worker) system or can't be read
